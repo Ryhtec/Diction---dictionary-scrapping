@@ -4,56 +4,57 @@ A script for scrapping a website and counting of unique words
 Installation
 Use the package manager pip to install foobar.
 
-pip install beautifulsoup4
-Usage
-from bs4 import BeautifulSoup
-import requests
+    pip install beautifulsoup4
+    Usage
+    from bs4 import BeautifulSoup
+    import requests
 
-import re
-from collections import Counter
+    import re
+    from collections import Counter
 
-#IMPORT CSV LIBRARY
-import  csv
-#OPEN A NEW CSV FILE. 
-file = open('scraped_quotes.csv','w')
+    #IMPORT CSV LIBRARY
+    import  csv
+    #OPEN A NEW CSV FILE. 
+    file = open('scraped_quotes.csv','w')
 
-#OPEN A NEW TXT FILE. 
-file = open('scraped_quotes.txt','w')
-
-
-#CREATE A VARIABLE FOR WRITING TO THE CSV
-writer = csv.writer(file)
+    #OPEN A NEW TXT FILE. 
+    file = open('scraped_quotes.txt','w')
 
 
-#CREATE THE HEADER ROW OF THE CSV
-writer.writerow(['Quote','Author'])
+    #CREATE A VARIABLE FOR WRITING TO THE CSV
+    writer = csv.writer(file)
 
-#REQUEST WEBPAGE AND STORE IT AS A VARIABLE
-page_to_scrape = requests.get("https://quotes.toscrape.com/")
 
-#USE BEAUTIFULSOUP TO PARSE THE HTML AND STORE IT AS A VARIABLE
-soup = BeautifulSoup(page_to_scrape.text,'html.parser')
+    #CREATE THE HEADER ROW OF THE CSV
+    writer.writerow(['Quote','Author'])
 
-#FIND ALL THE ITEMS IN THE PAGE WITH A CLASS ATTRIBUTE OF 'TEXT'
-#AND STORE THE LIST AS A VARIABLE
-quotes = soup.findAll('span', attrs={'class':'text'})
+    #REQUEST WEBPAGE AND STORE IT AS A VARIABLE
+    page_to_scrape = requests.get("https://quotes.toscrape.com/")
 
-#FIND ALL THE ITEMS IN THE PAGE WITH A CLASS ATTRIBUTE OF 'AUTHOR'
-#AND STORE THE LIST AS A VARIABLE
-authors= soup.findAll('small', attrs={'class':'author'})
+    #USE BEAUTIFULSOUP TO PARSE THE HTML AND STORE IT AS A VARIABLE
+    soup = BeautifulSoup(page_to_scrape.text,'html.parser')
 
-#LOOP THROUGH BOTH LISTS USING THE 'ZIP' FUNCTION
-#AND PRINT AND FORMAT THE RESULTS
-for quote,author in zip (quotes,authors):
-    print(quote.text+"-"+author.text)
-    writer.writerow([quote.text ,author.text])
-    file.write(quote.text+"-"+author.text)
+    #FIND ALL THE ITEMS IN THE PAGE WITH A CLASS ATTRIBUTE OF 'TEXT'
+    #AND STORE THE LIST AS A VARIABLE
+    quotes = soup.findAll('span', attrs={'class':'text'})
 
-#CLOSE THE CSV and TXT FILE
-file.close()
+    #FIND ALL THE ITEMS IN THE PAGE WITH A CLASS ATTRIBUTE OF 'AUTHOR'
+    #AND STORE THE LIST AS A VARIABLE
+    authors= soup.findAll('small', attrs={'class':'author'})
 
-#FUNCTION TO COUNT UNIQUE WORDS
-def count_words(path):
+    #LOOP THROUGH BOTH LISTS USING THE 'ZIP' FUNCTION
+    #AND PRINT AND FORMAT THE RESULTS
+    for quote,author in zip (quotes,authors):
+        print(quote.text+"-"+author.text)
+        writer.writerow([quote.text ,author.text])
+        file.write(quote.text+"-"+author.text)
+
+    #CLOSE THE CSV and TXT FILE
+    file.close()
+
+    #FUNCTION TO COUNT UNIQUE WORDS
+    def count_words(path):
+
     #OPEN THE TXT FILE SAVED FROM THE SCAPPED WEBSITE
     with  open(path, encoding='unicode_escape') as file:
 
@@ -77,10 +78,10 @@ def count_words(path):
             print(word[0], '\t', word[1])
 
 
-#CALL FUNCTION
-count_words('scraped_quotes.txt')
+    #CALL FUNCTION
+    count_words('scraped_quotes.txt')
 
-## Contributing
+    ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
